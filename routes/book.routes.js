@@ -6,7 +6,7 @@ const AuthorModel = require('../models/Author.model');
 
 const { ObjectId } = require('mongodb');
 
-// GET /books
+// READ: display all books
 router.get("/books", (req, res, next) => {
   
   BookModel.find()
@@ -29,7 +29,7 @@ router.get("/books", (req, res, next) => {
     })
 });
 
-// GET /books/create
+// CREATE: display form
 // MUST BE BEFORE GET /books/:bookId !!!
 // otherwise:
 // CastError: Cast to ObjectId failed for value "create" (type string) at path "_id" for model "Book"
@@ -44,7 +44,7 @@ router.get("/books/create", (req, res, next) => {
     });
 })
 
-// POST /books/create
+// CREATE: process form
 router.post("/books/create", (req, res, next) => {
 
   // do not pass req.body directly to create new book in case user has added extra properties...
@@ -70,27 +70,51 @@ router.post("/books/create", (req, res, next) => {
     });
 });
 
-// GET /books/:bookId/edit
+// UPDATE: display form
 router.get("/books/:bookId/edit", (req, res, next) => {
 
   //BookModel.find({_id: req.params.bookId})
-  BookModel.findById(req.params.bookId)
+  // BookModel.findById(req.params.bookId)
+  //   .then((bookFromDB) => {
+  //     res.render("books/book-edit", bookFromDB)
+  //   })
+  //   .catch( e => {
+  //     console.log("error getting book from DB", e);
+  //     next(e);
+  //   })
+
+  // using book-edit2.hbs
+  const { bookId } = req.params;
+  let authors;
+  AuthorModel.find()
+    .then((authorsFromDB) => {
+      authors = authorsFromDB;
+      return BookModel.findById(bookId)
+    })
     .then((bookFromDB) => {
-      res.render("books/book-update", bookFromDB)
+      res.render('books/book-edit2.hbs', { book: bookFromDB, authors: authors });
     })
-    .catch( e => {
-      console.log("error getting book from DB", e);
-      next(e);
-    })
+    .catch(error => next(error));
 });
 
-// POST /books/:bookId/edit
+// // UPDATE: display form (**ASYNC**)
+// router.get('/books/:bookId/edit', async (req, res, next) => {
+//   const { bookId } = req.params;
+//   try {
+//     const authors = await AuthorModel.find();
+//     const bookFromDB = await BookModel.findById(bookId);
+//     res.render('books/book-edit2.hbs', { book: bookFromDB, authors: authors });
+//   } catch (e) {
+//     next(e);
+//   }
+// });
+
+// UPDATE: process form
 router.post("/books/:bookId/edit", (req, res, next) => {
   const {title, description, author, rating} = req.body
-  BookModel.findByIdAndUpdate(req.params.bookId, {title, description, author, rating})
+  BookModel.findByIdAndUpdate(req.params.bookId, {title, description, author, rating}, {new: true})
     .then((book) => {
-      console.log(book);
-      res.redirect("/books")
+      res.redirect("/books/" + book._id)
     })
     .catch( e => {
         console.log("error updating book", e);
@@ -98,7 +122,7 @@ router.post("/books/:bookId/edit", (req, res, next) => {
     });
 });
 
-// POST /books/:bookId/delete
+// DELETE: delete book
 router.post("/books/:bookId/delete", (req, res, next) => {
   // BookModel.findByIdAndDelete(req.params.bookId)
 
@@ -113,7 +137,7 @@ router.post("/books/:bookId/delete", (req, res, next) => {
     })
 });
 
-// GET /books
+// READ: display details of one book
 router.get("/books/:bookId", (req, res, next) => {
 
   BookModel.find({_id: req.params.bookId})
@@ -140,10 +164,23 @@ router.get("/books/:bookId", (req, res, next) => {
       res.render("books/book-details", {...bookFromDB[0]._doc, id2: bookFromDB[0]._id.toString()})
     })
     .catch( e => {
-      console.log("error getting book from DB", e);
+      console.log("error getting book details from DB", e);
       next(e);
     })
 });
+
+// // READ: display details of one book
+// router.get("/books/:bookId", (req, res, next) => {
+//   BookModel.findById(req.params.bookId)
+//       .populate("author")
+//       .then(bookFromDB => {
+//           res.render("books/book-details", bookFromDB);
+//       })
+//       .catch(e => {
+//           console.log("error getting book details from DB", e);
+//           next(e);
+//       });
+// });
 
 // -- //
 
