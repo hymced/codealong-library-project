@@ -16,7 +16,6 @@ router.get("/books", (req, res, next) => {
     // })
     .populate("author") // replace new ObjectId() references by corresponding documents
     .then((booksFromDB) => {
-      console.log(booksFromDB)
       // res.send(`books in db: ${booksFromDB.length}`)
       res.render("books/books-list", {books: booksFromDB})
       // console.log(booksFromDB[0]._id) // returns new ObjectId("<ID>") where <ID> is 24 character hexadecimal string value 
@@ -35,7 +34,14 @@ router.get("/books", (req, res, next) => {
 // otherwise:
 // CastError: Cast to ObjectId failed for value "create" (type string) at path "_id" for model "Book"
 router.get("/books/create", (req, res, next) => {
-  res.render("books/book-create");
+  AuthorModel.find()
+    .then( authorsFromDB => {
+        res.render("books/book-create", {authorsArr: authorsFromDB});
+    })
+    .catch( e => {
+        console.log("error displaying book create form", e);
+        next(e);
+    });
 })
 
 // POST /books/create
@@ -92,13 +98,13 @@ router.post("/books/:bookId/edit", (req, res, next) => {
     });
 });
 
-// GET /books/:bookId/delete
-router.get("/books/:bookId/delete", (req, res, next) => {
+// POST /books/:bookId/delete
+router.post("/books/:bookId/delete", (req, res, next) => {
   // BookModel.findByIdAndDelete(req.params.bookId)
 
   BookModel.deleteOne({_id: req.params.bookId})
     .then((bookFromDB) => {
-      console.log(req.params.bookId + " deleted")
+      console.log("book deleted, id was: " + req.params.bookId)
       res.redirect("/books")
     })
     .catch( e => {

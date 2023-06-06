@@ -2,7 +2,11 @@
 
 <h1>Books in DB:</h1>
 
+<a href="/books/create">Add</a>
+
 {{#each books}}
+    <hr />
+
     <section class="book-summary">
         <h2>{{this.title}}</h2>
         <p>
@@ -12,6 +16,12 @@
             {{!-- the property containing the ObjectId printed as `new ObjectId("<ID>")` is automatically converted to "<ID>" by handlebars by calling its .toString() method (different than the generic Object.prototype.toString()) --}}
             <a href="/books/{{_id}}">More details</a>
             <a href="/books/{{id}}">More details</a> {{!-- same as _id but not my id2 --}}
+           
+            <a href="/books/{{_id}}/edit">Edit</a>
+
+            <form method="POST" action="/books/{{_id}}/delete">
+                <button>Delete</button>
+            </form>
         </p>
 
     </section>

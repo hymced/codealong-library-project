@@ -63,7 +63,7 @@ const bookSchema = new Schema(
     authors: [{ // multiple references
       type: Schema.Types.ObjectId, // using Schema directly because already imported
       ref: 'Author'
-    }],
+    }], // Mongoose can automatically cast a string id to the corresponding ObjectID/Author even if mongoose.set('strictQuery', true); so in this case, there won't be an Error: Cast to ObjectId failed
     rating: Number
   },
   {
