@@ -6,7 +6,7 @@
     <section class="book-summary">
         <h2>{{this.title}}</h2>
         <p>
-            Author: {{this.author}} <br />
+            Author: {{this.author.name}} <br />
             Rating: {{this.rating}} <br />
             <a href="/books/{{this._id}}">More details</a>
             {{!-- the property containing the ObjectId printed as `new ObjectId("<ID>")` is automatically converted to "<ID>" by handlebars by calling its .toString() method (different than the generic Object.prototype.toString()) --}}

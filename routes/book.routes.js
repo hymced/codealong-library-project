@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const BookModel = require('../models/Book.model');
+const AuthorModel = require('../models/Author.model');
 
 const { ObjectId } = require('mongodb');
 
@@ -9,22 +10,24 @@ const { ObjectId } = require('mongodb');
 router.get("/books", (req, res, next) => {
   
   BookModel.find()
-  // .then((books) => {
-  //   // res.send(`books in db: ${booksFromDB.length}`)
-  //   res.render("books/books-list", {books: books}) // same as {books}
-  // })
-  .then((booksFromDB) => {
-    // res.send(`books in db: ${booksFromDB.length}`)
-    res.render("books/books-list", {books: booksFromDB})
-    // console.log(booksFromDB[0]._id) // returns new ObjectId("<ID>") where <ID> is 24 character hexadecimal string value 
-    // console.log(typeof booksFromDB[0]._id) // returns object
-    // console.log(booksFromDB[0]._id.toString())
-    // console.log(Object.prototype.toString(booksFromDB[0]._id))
-  })
-      .catch( e => {
-        console.log("error getting list of books from DB", e);
-        next(e);
-      })
+    // .then((books) => {
+    //   // res.send(`books in db: ${booksFromDB.length}`)
+    //   res.render("books/books-list", {books: books}) // same as {books}
+    // })
+    .populate("author") // replace new ObjectId() references by corresponding documents
+    .then((booksFromDB) => {
+      console.log(booksFromDB)
+      // res.send(`books in db: ${booksFromDB.length}`)
+      res.render("books/books-list", {books: booksFromDB})
+      // console.log(booksFromDB[0]._id) // returns new ObjectId("<ID>") where <ID> is 24 character hexadecimal string value 
+      // console.log(typeof booksFromDB[0]._id) // returns object
+      // console.log(booksFromDB[0]._id.toString())
+      // console.log(Object.prototype.toString(booksFromDB[0]._id))
+    })
+    .catch( e => {
+      console.log("error getting list of books from DB", e);
+      next(e);
+    })
 });
 
 // GET /books/create

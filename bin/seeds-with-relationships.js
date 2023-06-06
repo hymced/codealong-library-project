@@ -43,19 +43,18 @@ async function seedData() {
     try {
 
         /* CONNECT */
-        const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost/library-project';
+        const MONGO_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/library-project';
         const conn = await mongoose.connect(MONGO_URI);
         console.log(`Connected to Mongo! Database name: "${conn.connections[0].name}"`);
 
         /* DELETE EXISTING DATA */
-        // const deletedBooks = await Book.deleteMany({}); // WARNING: this will delete all books in your DB !!
-        // const deletedAuthors = await Author.deleteMany({}); // WARNING: this will delete all authors in your DB !!
-        // console.log(deletedBooks, deletedAuthors);
+        const deletedBooks = await Book.deleteMany({}); // WARNING: this will delete all books in your DB !!
+        const deletedAuthors = await Author.deleteMany({}); // WARNING: this will delete all authors in your DB !!
+        console.log(deletedBooks, deletedAuthors);
 
         /* Seed authors */
         const authorsCreated = await Author.insertMany(authors);
-        console.log(`Number of authors created... ${authorsCreated.length} `);
-
+        console.log(`Number of authors created: ${authorsCreated.length} `);
 
         /* Seed books */
         /* (for each book, we need to find the objectId of its author) */
@@ -77,13 +76,13 @@ async function seedData() {
         }
 
         const booksCreated = await Book.insertMany(booksWithIds);
-        console.log(`Number of books created... ${booksCreated.length} `);
+        console.log(`Number of books created: ${booksCreated.length} `);
 
         /* CLOSE DB CONNECTION */
         mongoose.connection.close();
 
     } catch (e) {
-        console.log("error seeding data in DB....", e)
+        console.log("error seeding data in DB", e)
     }
 }
 

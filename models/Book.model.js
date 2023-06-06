@@ -67,7 +67,8 @@ const bookSchema = new Schema(
     rating: Number
   },
   {
-    timestamps: true
+    timestamps: true,
+    strict: 'throw' // StrictModeError if trying to pass values to model constructor that were not specified in schema or change immutable properties 
   }
 );
 module.exports = model('Book', bookSchema);
