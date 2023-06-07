@@ -1,11 +1,11 @@
-<h2>Register</h2>
+<h2>Login</h2>
 
-<form method="POST" action="/signup">
+<form method="POST" action="/login">
 
     {{#if errorMessage}}
-        <p class="warning">
-            {{errorMessage}}
-        </p>
+    <p class="warning">
+        {{errorMessage}}
+    </p>
     {{/if}}
 
     <label>Email: 
@@ -16,10 +16,11 @@
         <input type="password" name="password" placeholder="********" />
     </label>
 
-    <button type="submit"> Create account </button>
+    <button type="submit"> Login </button>
+
 
     <div class="info">
-        <p>Or click <a href="/login">here</a> to log in.</p>
+        <p>Or click <a href="/signup">here</a> to sign up.</p>
     </div>
 
 </form>
