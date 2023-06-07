@@ -31,6 +31,7 @@ const indexRoutes = require("./routes/index.routes");
 app.use("/", indexRoutes);
 app.use("/", require("./routes/book.routes"));
 app.use("/", require("./routes/author.routes"));
+app.use("/", require("./routes/auth.routes"));
 
 /****************/
 /* mount routes */
