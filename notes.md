@@ -113,3 +113,43 @@ This example shows a middleware function mounted on the /user/:id path. The func
     next()
   })
 ```
+
+Languages Supported by Github Flavored Markdown
+
+https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks
+
+We use Linguist to perform language detection and to select third-party grammars for syntax highlighting. You can find out which keywords are valid in the languages YAML file.
+
+https://github.com/github-linguist/linguist/blob/master/lib/linguist/languages.yml
+
+Shell:
+  - sh
+  - shell-script
+  - bash
+  - zsh
+
+  https://superuser.com/questions/531592/how-to-add-the-tree-command-to-git-bash-in-windows
+You could also use "cmd //c tree" to use Windows' tree
+```shell
+cmd //c tree
+```
+or:
+https://gnuwin32.sourceforge.net/packages/tree.htm
+Version
+1.5.2.2
+Binaries
+http://downloads.sourceforge.net/gnuwin32/tree-1.5.2.2-bin.zip
+Complete package, except sources
+http://downloads.sourceforge.net/gnuwin32/tree-1.5.2.2-setup.exe
+https://sourceforge.net/projects/gnuwin32/files/tree/
+https://sourceforge.net/projects/gnuwin32/files/tree/1.5.2.2/
+tree-1.5.2.2-src-setup.exe --> tree-1.5.2.2-src.zip
+(includes all the necessary files and instructions to compile and build the software from its source code)
+tree-1.5.2.2-setup.exe --> tree-1.5.2.2-bin.zip
+https://sourceforge.net/projects/gnuwin32/files/tree/1.5.2.2/tree-1.5.2.2-setup.exe/download
+
+install manually the binary here: C:\Program Files\Git\usr\bin
+or use the installer (C:\Program Files (x86)\GnuWin32\bin\tree.exe) 
+add to profile
+export PATH="$PATH:/usr/local/bin"
+C:\Program Files\Git\usr\bin

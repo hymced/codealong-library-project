@@ -4,6 +4,8 @@ const router = express.Router();
 const BookModel = require('../models/Book.model');
 const AuthorModel = require('../models/Author.model');
 
+const isLoggedIn = require('../middleware/isLoggedIn');
+
 const { ObjectId } = require('mongodb');
 
 // READ: display all books
@@ -33,7 +35,7 @@ router.get("/books", (req, res, next) => {
 // MUST BE BEFORE GET /books/:bookId !!!
 // otherwise:
 // CastError: Cast to ObjectId failed for value "create" (type string) at path "_id" for model "Book"
-router.get("/books/create", (req, res, next) => {
+router.get("/books/create", isLoggedIn, (req, res, next) => {
   AuthorModel.find()
     .then( authorsFromDB => {
         res.render("books/book-create", {authorsArr: authorsFromDB});
@@ -45,7 +47,7 @@ router.get("/books/create", (req, res, next) => {
 })
 
 // CREATE: process form
-router.post("/books/create", (req, res, next) => {
+router.post("/books/create", isLoggedIn, (req, res, next) => {
 
   // do not pass req.body directly to create new book in case user has added extra properties...
 
@@ -71,7 +73,7 @@ router.post("/books/create", (req, res, next) => {
 });
 
 // UPDATE: display form
-router.get("/books/:bookId/edit", (req, res, next) => {
+router.get("/books/:bookId/edit", isLoggedIn, (req, res, next) => {
 
   //BookModel.find({_id: req.params.bookId})
   // BookModel.findById(req.params.bookId)
@@ -110,7 +112,7 @@ router.get("/books/:bookId/edit", (req, res, next) => {
 // });
 
 // UPDATE: process form
-router.post("/books/:bookId/edit", (req, res, next) => {
+router.post("/books/:bookId/edit", isLoggedIn, (req, res, next) => {
   const {title, description, author, rating} = req.body
   BookModel.findByIdAndUpdate(req.params.bookId, {title, description, author, rating}, {new: true})
     .then((book) => {
@@ -123,7 +125,7 @@ router.post("/books/:bookId/edit", (req, res, next) => {
 });
 
 // DELETE: delete book
-router.post("/books/:bookId/delete", (req, res, next) => {
+router.post("/books/:bookId/delete", isLoggedIn, (req, res, next) => {
   // BookModel.findByIdAndDelete(req.params.bookId)
 
   BookModel.deleteOne({_id: req.params.bookId})

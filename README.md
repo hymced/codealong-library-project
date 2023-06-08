@@ -45,3 +45,24 @@ Step 6: (DELETE) functionality to delete a book
 - [x] Create a route (POST `/books/:bookId/delete`)
 - [x] Query to DB --> Book.findByIdAndDelete(req.params.bookId)
 - [x] Redirect to `/books`
+
+# Structure
+
+.
+├───.vscode
+├───bin
+├───config
+├───db
+├───error-handling
+├───models
+├───node_modules
+├───public
+│   ├───images
+│   ├───js
+│   └───stylesheets
+├───routes
+├───utils
+└───views
+    ├───auth
+    ├───authors
+    └───books
