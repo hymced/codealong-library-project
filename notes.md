@@ -4,6 +4,19 @@ https://mongoosejs.com/docs/queries.html#queries-are-not-promises
 
 > Mongoose queries are not promises. They have a .then() function for co and async/await as a convenience. However, unlike promises, calling a query's .then() can execute the query multiple times.
 
+For example, the below code will execute 3 updateMany() calls, one because of the callback, and two because .then() is called twice.
+
+```
+const q = MyModel.updateMany({}, { isDeleted: true }, function() {
+  console.log('Update 1');
+});
+
+q.then(() => console.log('Update 2'));
+q.then(() => console.log('Update 3'));
+```
+
+Don't mix using callbacks and promises with queries, or you may end up with duplicate operations. That's because passing a callback to a query function immediately executes the query, and calling then() executes the query again.
+
 # FIX
 
 ```localhost ECONNREFUSED ::1:27017```
@@ -50,35 +63,36 @@ default path to executable:
 
 # TO DO:
 
- GET /books/:bookId" 
- 
  (Super Bonus) Functionality to filter books by min rating
 - Modify route /books
 - Use query string + method .filter()
 - Provide a form so that users can search
 
-- error cast???
-
-# CRUD ROADMAP
-
-[x] READ list of books
-    - create a route: GET "/books"
-      - Book.find()
-    - create view: "books-list.hbs"
-[x] READ details of a book
-    - create a new route: GET "/books/:bookId"
-      - req.params.bookId
-      - Book.findById()
-    - create view: "books/book-details.hbs"
-[x] CREATE a book
-    1. GET /books/create ---> DISPLAY FORM
-        - view with a form (post)
-    2. POST /books/create ---> PROCESS THE FORM
-       - create a new route
-         - req.body
-         - Book.create(data)
-[x] UPDATE a book
-    1. GET /books/:bookId/edit ---> DISPLAY FORM
-       Book.findById(id)
-    2. POST /books/:bookId/edit ---> PROCESS THE FORM
-[x] DELETE a book
+Implement header with:
+- If user is logged-in: display the message "Welcome ${username}" + Logout button
+- If user is logged-out: display "Register" + "Login" links
+Hint: https://expressjs.com/en/api.html#res.locals
+```js
+  res.locals.pizza = true;
+  app.use((req, res, next) => {
+    res.locals.session = req.session; // allow access to session data from layout.hbs
+    next()
+  });
+```
+https://expressjs.com/en/guide/using-middleware.html
+This example shows a middleware function with no mount path. The function is executed every time the app receives a request.
+```js
+  const express = require('express')
+  const app = express()
+  app.use((req, res, next) => {
+    console.log('Time:', Date.now())
+    next()
+  })
+```
+This example shows a middleware function mounted on the /user/:id path. The function is executed for any type of HTTP request on the /user/:id path.
+```js
+  app.use('/user/:id', (req, res, next) => {
+    console.log('Request Type:', req.method)
+    next()
+  })
+```

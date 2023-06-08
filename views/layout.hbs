@@ -17,8 +17,15 @@
          <a href="/books/create">Create new book</a>
          <a href="/authors">Authors</a>
          <a href="">~</a>
-         <a href="/signup">Signup</a>
-         <a href="/login">Login</a>
+         {{#if _locals.session.currentUser}}
+            <a href="/user-profile">User profile</a>
+            <form id="logout-form" method="POST" action="/logout" >
+               <button>Logout</button>
+            </form>
+         {{else}}
+            <a href="/signup">Signup</a>
+            <a href="/login">Login</a>
+         {{/if}}
       </nav>
       
       {{{body}}}
