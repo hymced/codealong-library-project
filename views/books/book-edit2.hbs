@@ -1,11 +1,11 @@
 <h2>Update a book</h2>
 
 <form method="post" action="/books/{{book._id}}/edit">
-  <label> Title:
+  <label>Title: 
     <input type="text" name="title" value="{{book.title}}"/>
   </label>
 
-  <label> Author:
+  <label>Author: 
     <select name="author">
         {{#each authors}}
             <option value={{this._id}}>
@@ -15,11 +15,11 @@
     </select>
 </label>
 
-  <label> Description:
+  <label>Description: 
     <textarea name="description" cols="30" rows="4">{{book.description}}</textarea>
   </label>
 
-  <label> Rate:
+  <label>Rate: 
     <input type="number" name="rating" min="1" max="10" value="{{book.rating}}"/>
   </label>
 

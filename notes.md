@@ -17,6 +17,23 @@ q.then(() => console.log('Update 3'));
 
 Don't mix using callbacks and promises with queries, or you may end up with duplicate operations. That's because passing a callback to a query function immediately executes the query, and calling then() executes the query again.
 
+https://mongoosejs.com/docs/promises.html
+## Queries are not promises
+Mongoose queries are not promises. They have a .then() function for co and async/await as a convenience. If you need a fully-fledged promise (*), use the .exec() function.
+## Queries are thenable
+Although queries are not promises, queries are thenables. That means they have a .then() function, so you can use queries as promises with either promise chaining or async await.
+## Should You Use exec() With await?
+There are two alternatives for using await with queries:
+```js
+await Band.findOne();
+await Band.findOne().exec();
+```
+As far as functionality is concerned, these two are equivalent. However, we recommend using .exec() because that gives you better stack traces.
+
+(*)
+https://stackoverflow.com/questions/53470299/what-is-fully-fledged-promise
+That means that the values returned by queries are thenables per the definition of the Promises/A+ spec, but not actual Promise instances. That means they may not have all of the features of promises (for instance, catch and finally methods).
+
 # FIX
 
 ```localhost ECONNREFUSED ::1:27017```

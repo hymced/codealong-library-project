@@ -1,11 +1,11 @@
 <h2>Create a book</h2>
 
 <form method="post" action="/books/create">
-  <label> Title:
+  <label>Title: 
     <input type="text" name="title" />
   </label>
 
-  <label> Author:
+  <label>Author: 
     <select name="author">
         {{#each authorsArr}}
           <option value="{{this._id}}">{{this.name}}</option>
@@ -13,11 +13,11 @@
     </select>
   </label>
 
-  <label> Description:
+  <label>Description: 
     <textarea name="description" cols="30" rows="4"> </textarea>
   </label>
 
-  <label> Rate:
+  <label>Rate: 
     <input type="number" name="rating" min="1" max="10" />
   </label>
 
