@@ -131,8 +131,19 @@ Shell:
   https://superuser.com/questions/531592/how-to-add-the-tree-command-to-git-bash-in-windows
 You could also use "cmd //c tree" to use Windows' tree
 ```shell
-cmd //c tree
+cmd //c tree /F
 ```
+```cmd
+excluse:
+dir /B /AD /S | findstr /V /I /C:"node_modules"
+include:
+dir /B /AD /S | findstr /I /C:"views"
+```
+C:\Windows\SysWOW64\tree.com
+but tree does not accept piped input for its <path> parameter, it only use current folder
+https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tree
+https://stackoverflow.com/questions/43810090/print-directory-tree-but-exclude-a-folder-on-windows-cmd/43810460#43810460
+
 or:
 https://gnuwin32.sourceforge.net/packages/tree.htm
 Version
@@ -153,3 +164,34 @@ or use the installer (C:\Program Files (x86)\GnuWin32\bin\tree.exe)
 add to profile
 export PATH="$PATH:/usr/local/bin"
 C:\Program Files\Git\usr\bin
+
+cmd Run as Admin
+C:\Program Files\Git\usr\bin>mklink tree "C:\Program Files (x86)\GnuWin32\bin\tree.exe"
+symbolic link created for tree <<===>> C:\Program Files (x86)\GnuWin32\bin\tree.exe
+https://www.howtogeek.com/16226/complete-guide-to-symbolic-links-symlinks-on-windows-or-linux/
+https://www.geeksforgeeks.org/difference-between-hard-link-and-soft-link/
+https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link
+
+```shell
+tree -I 'node_modules|cache|test_*'
+tree -I 'node_modules|cache|test_*' | sed 's/[`]/|/g; s/[-]/_/g'
+```
+
+> chatPGT:
+> differences:
+> Representation:
+> Soft Link: A soft link is a separate file that contains the path to the original file or directory. It is essentially a shortcut or reference to another file or directory. Soft links are represented by a separate inode (index node).
+> Hard Link: A hard link, on the other hand, is a direct reference to the original file or directory. It is an additional name (link) for the same file or directory. Hard links are represented by the same inode as the original file or directory.
+> Target Update:
+> Soft Link: If the original file or directory is moved or renamed, the soft link will still point to the original target, even if it no longer exists. Soft links can even point to files or directories on different filesystems.
+> Hard Link: If the original file or directory is moved or renamed, the hard link will still refer to the original target. All hard links point to the same underlying data on the filesystem. If the original file or directory is deleted, the data is not immediately removed as long as at least one hard link exists.
+> File Size:
+> Soft Link: A soft link has its own file size and occupies additional space on the filesystem, as it stores the path to the target file or directory.
+> Hard Link: A hard link does not have its own file size. It points directly to the original file or directory, and both links share the same storage on the filesystem.
+> Removal:
+> Soft Link: Deleting a soft link does not affect the original file or directory. The original file or directory remains intact.
+> Hard Link: Deleting a hard link does not affect the original file or directory unless it is the last remaining hard link. In that case, deleting the last hard link will remove the file or directory and free up the associated storage.
+> Cross-Filesystem Support:
+> Soft Link: Soft links can point to files or directories on different filesystems.
+> Hard Link: Hard links can only be created for files or directories within the same filesystem.
+> In summary, soft links are independent files that reference another file or directory by their path, while hard links are additional names pointing directly to the original file or directory. Soft links provide more flexibility in terms of target updates and cross-filesystem support, but they occupy additional space on the filesystem. Hard links, on the other hand, directly reference the original file or directory and share the same data storage, making them efficient in terms of space utilization.

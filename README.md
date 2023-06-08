@@ -49,20 +49,56 @@ Step 6: (DELETE) functionality to delete a book
 # Structure
 
 .
-├───.vscode
-├───bin
-├───config
-├───db
-├───error-handling
-├───models
-├───node_modules
-├───public
-│   ├───images
-│   ├───js
-│   └───stylesheets
-├───routes
-├───utils
-└───views
-    ├───auth
-    ├───authors
-    └───books
+|__ README.md
+|__ app.js
+|__ bin
+|   |__ seeds_with_relationships.js
+|   |__ seeds.js
+|__ config
+|   |__ index.js
+|   |__ session.config.js
+|__ db
+|   |__ index.js
+|__ error_handling
+|   |__ index.js
+|__ middleware
+|   |__ isLoggedIn.js
+|__ models
+|   |__ Author.model.js
+|   |__ Book.model.js
+|   |__ User.model.js
+|__ notes.md
+|__ package_lock.json
+|__ package.json
+|__ public
+|   |__ images
+|   |   |__ favicon.ico
+|   |__ js
+|   |   |__ script.js
+|   |__ stylesheets
+|       |__ style.css
+|__ routes
+|   |__ auth.routes.js
+|   |__ author.routes.js
+|   |__ book.routes.js
+|   |__ index.routes.js
+|__ server.js
+|__ utils
+|   |__ capitalize.js
+|__ views
+    |__ auth
+    |   |__ login.hbs
+    |   |__ signup.hbs
+    |   |__ user_profile.hbs
+    |__ authors
+    |   |__ authors_list.hbs
+    |__ books
+    |   |__ book_create.hbs
+    |   |__ book_details.hbs
+    |   |__ book_edit.hbs
+    |   |__ book_edit2.hbs
+    |   |__ books_list.hbs
+    |__ error.hbs
+    |__ index.hbs
+    |__ layout.hbs
+    |__ not_found.hbs
